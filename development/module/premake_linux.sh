@@ -1,0 +1,1 @@
+./premake5 --os=linux --gmcommon=../garrysmod_common gmake2
