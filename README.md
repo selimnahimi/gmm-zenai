@@ -1,3 +1,5 @@
+[![Build](https://github.com/selimnahimi/gmm-zenai/actions/workflows/compile.yml/badge.svg)](https://github.com/selimnahimi/gmm-zenai/actions/workflows/compile.yml)
+
 # gmod-common-module-base
 This is the module structure I use for my projects.
 

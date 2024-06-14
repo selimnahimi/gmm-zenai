@@ -51,7 +51,7 @@ void serversock::createConnection()
     }
 }
 
-int serversock::readValues(objectData *a)
+int serversock::readValues(gameActionData *a)
 {
 
     fd_set fds;
@@ -68,13 +68,13 @@ int serversock::readValues(objectData *a)
         /* The socket_fd has data available to be read */
         n = recv(sockfd, buffer, sizeof(buffer), 0);
         cout << "Client received: " << n << endl;
-        if (n != sizeof(struct objectData))
+        if (n != sizeof(struct gameActionData))
         {
             return 0;
         }
-        struct objectData data = *((struct objectData *)buffer);
-        *a = *((struct objectData *)buffer);
-        cout << a->value << endl;
+        struct gameActionData data = *((struct gameActionData *)buffer);
+        *a = *((struct gameActionData *)buffer);
+        // cout << a->value << endl;
     }
     else
     {
@@ -82,4 +82,26 @@ int serversock::readValues(objectData *a)
     }
 
     return 0;
+}
+
+void serversock::writeValues(gameStateData *a)
+{
+    fd_set fds;
+    struct timeval tv;
+    tv.tv_sec = 0;
+    tv.tv_usec = 0;
+
+    FD_ZERO(&fds);
+    FD_SET(sockfd, &fds);
+    select(sockfd + 1, NULL, &fds, NULL, &tv);
+
+    if (FD_ISSET(sockfd, &fds))
+    {
+        n = send(sockfd, a, sizeof(struct gameStateData), 0);
+        if (n < 0)
+        {
+            perror("ERROR writing to socket");
+            exit(1);
+        }
+    }
 }
