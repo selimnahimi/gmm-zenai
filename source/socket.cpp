@@ -1,10 +1,15 @@
 #include <stdio.h>
 #include <iostream>
 #include <cstring>
-#include <arpa/inet.h>
 #include <sys/socket.h>
 #include <unistd.h>
 #include "socket.hpp"
+
+#ifdef WIN32
+#include <Winsock2.h>
+#else
+#include <arpa/inet.h>
+#endif
 
 #define PORT "8080"
 #define IP "127.0.0.1"
