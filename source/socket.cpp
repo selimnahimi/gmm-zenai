@@ -4,17 +4,7 @@
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <unistd.h>
-
-namespace serversock {
-    
-    struct objectData {
-        unsigned int value;
-    };
-    
-    void createConnection();
-    int readValues(objectData *a);
-
-}
+#include "socket.hpp"
 
 #define PORT "8080"
 #define IP "127.0.0.1"

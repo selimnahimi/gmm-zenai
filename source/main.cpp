@@ -1,7 +1,7 @@
 ﻿#include <GarrysMod/Lua/Interface.h>
 #include <thread>
 #include <chrono>
-#include "socket.cpp"
+#include "socket.hpp"
 
 using namespace std::chrono_literals;
 

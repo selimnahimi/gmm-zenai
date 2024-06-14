@@ -78,7 +78,9 @@ GENERATED :=
 OBJECTS :=
 
 GENERATED += $(OBJDIR)/main.o
+GENERATED += $(OBJDIR)/socket.o
 OBJECTS += $(OBJDIR)/main.o
+OBJECTS += $(OBJDIR)/socket.o
 
 # Rules
 # #############################################
@@ -143,6 +145,9 @@ endif
 # #############################################
 
 $(OBJDIR)/main.o: ../../../../../source/main.cpp
+	@echo "$(notdir $<)"
+	$(SILENT) $(CXX) $(PERFILE_FLAGS_0) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/socket.o: ../../../../../source/socket.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(PERFILE_FLAGS_0) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 
