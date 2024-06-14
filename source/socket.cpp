@@ -3,14 +3,10 @@
 #include <cstring>
 #include "socket.hpp"
 
-#ifdef WIN32
-#include <Winsock2.h>
-#include <sys/types.h>
-#else
+// TODO: add windows support
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <unistd.h>
-#endif
 
 #define PORT "8080"
 #define IP "127.0.0.1"
@@ -22,21 +18,7 @@ int sockfd, n;
 struct sockaddr_in serv_addr;
 char buffer[256];
 
-#ifdef WIN32
-WSADATA wsaData;
-#endif
-
 void serversock::createConnection() {
-    #ifdef WIN32
-	int err = WSAStartup(MAKEWORD(2,2), &wsaData);
-    if (err != 0) {
-        /* Tell the user that we could not find a usable */
-        /* Winsock DLL.                                  */
-        printf("WSAStartup failed with error: %d\n", err);
-        return 1;
-    }
-    #endif
-
     /* Create a socket point */
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
     

@@ -9,3 +9,4 @@ jobs:
       PROJECT_NAME: "template"
       BUILD_64x: "true"
       REALM: "sv"
+      BUILD_WINDOWS: "false"
