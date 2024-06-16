@@ -72,7 +72,7 @@ int serversock::readValues(gameActionData *a)
         {
             return 0;
         }
-        struct gameActionData data = *((struct gameActionData *)buffer);
+        // struct gameActionData data = *((struct gameActionData *)buffer);
         *a = *((struct gameActionData *)buffer);
         // cout << a->value << endl;
     }
