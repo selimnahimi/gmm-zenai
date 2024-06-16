@@ -11,6 +11,8 @@ should be doable in 4 + 61n instructions.
    If the inner loop is strung out (approx. 5*8 = 40 instructions),
 it would take about 6 + 46n instructions. */
 
+#include <cmath>
+
 #include "crc32b.hpp"
 
 unsigned int crc32b(const char *message)
@@ -32,4 +34,11 @@ unsigned int crc32b(const char *message)
         i = i + 1;
     }
     return ~crc;
+}
+
+// Hash string to float between 0-1
+// Source: https://stackoverflow.com/a/42909410
+float hash(const char *str)
+{
+	return crc32b(str) / pow(2, 32);
 }

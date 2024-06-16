@@ -2,7 +2,6 @@
 #include <thread>
 #include <chrono>
 #include <cstring>
-#include <cmath>
 
 #include "socket.hpp"
 #include "crc32b.hpp"
@@ -95,11 +94,4 @@ GMOD_MODULE_OPEN()
 GMOD_MODULE_CLOSE()
 {
 	return 0;
-}
-
-// Hash string to float between 0-1
-// Source: https://stackoverflow.com/a/42909410
-float hash(const char *str)
-{
-	return crc32b(str) / pow(2, 32);
 }
