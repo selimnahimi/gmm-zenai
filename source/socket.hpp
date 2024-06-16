@@ -6,14 +6,14 @@ namespace serversock
 {
     struct gameStateData
     {
-        float map_name;
+        double map_name;
         double time_spent;
 
         double view_trace_distance_array[VIEW_GRID_SIZE_X * VIEW_GRID_SIZE_Y];
-        float view_trace_classname_array[VIEW_GRID_SIZE_X * VIEW_GRID_SIZE_Y];
+        double view_trace_classname_array[VIEW_GRID_SIZE_X * VIEW_GRID_SIZE_Y];
 
         float player_status;
-        float equipped_weapon;
+        double equipped_weapon;
         double next_checkpoint_distance;
         float incoming_damage_direction;
         float incoming_damage_amount;

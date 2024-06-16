@@ -26,7 +26,7 @@ LUA_FUNCTION(RegisterGameState)
 	const char *map_name = LUA->GetString(-1);
 	game_state_data.map_name = hash(map_name);
 	LUA->Pop();
-	
+
 	LUA->GetField(1, "time_spent");
 	game_state_data.time_spent = LUA->GetNumber(-1);
 	LUA->Pop();
@@ -39,6 +39,14 @@ LUA_FUNCTION(RegisterGameState)
 	const char *equipped_weapon = LUA->GetString(-1);
 	game_state_data.equipped_weapon = hash(equipped_weapon);
 	LUA->Pop();
+
+	LUA->PushSpecial(GarrysMod::Lua::SPECIAL_GLOB); // Push the global table
+	LUA->GetField(-1, "print");						// Get the print function
+	LUA->PushString("Equipped Weapon Hash");		// Push our argument
+	LUA->PushString(equipped_weapon);				// Push our argument
+	LUA->PushNumber(hash(equipped_weapon));			// Push our argument
+	LUA->Call(3, 0);								// Call the function
+	LUA->Pop();										// Pop the global table off the stack
 
 	LUA->GetField(1, "incoming_damage_direction");
 	game_state_data.incoming_damage_direction = LUA->GetNumber(-1);

@@ -11,12 +11,12 @@ VIEW_GRID_SIZE_TOTAL = VIEW_GRID_SIZE_X * VIEW_GRID_SIZE_Y
 # This comes from socket.hpp
 FORMAT = {
     'endian': '>', # Big endian
-    'map_name': 'f',
-    'time_spent': 'I',
+    'map_name': 'd',
+    'time_spent': 'd',
     'view_trace_distance_array': f'{VIEW_GRID_SIZE_TOTAL}d',
-    'view_trace_classname_array': f'{VIEW_GRID_SIZE_TOTAL}f',
+    'view_trace_classname_array': f'{VIEW_GRID_SIZE_TOTAL}d',
     'player_status': 'f',
-    'equipped_weapon': 'f',
+    'equipped_weapon': 'd',
     'next_checkpoint_distance': 'd',
     'incoming_damage_direction': 'f',
     'incoming_damage_amount': 'f',
@@ -50,3 +50,4 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 buffer = buffer[struct.calcsize(GAME_STATE_DATA_STRUCT_FORMAT):]
                 print(game_state_data)
                 print("Unpacked")
+                print("Equipped weapon: " + str(game_state_data[-5]))

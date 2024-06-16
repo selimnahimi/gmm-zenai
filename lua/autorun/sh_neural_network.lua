@@ -101,7 +101,7 @@ hook.Add("Think", "zenai_think", function()
         ["map_name"] = game.GetMap(),
         ["time_spent"] = CurTime(),
         ["player_status"] = player_status,
-        ["equipped_weapon"] = LocalPlayer():GetActiveWeapon():Getclass(),
+        ["equipped_weapon"] = LocalPlayer():GetActiveWeapon():GetClass(),
         ["incoming_damage_direction"] = last_damage_direction,
         ["incoming_damage_amount"] = last_damage,
         ["reward"] = last_reward,

@@ -36,9 +36,9 @@ unsigned int crc32b(const char *message)
     return ~crc;
 }
 
-// Hash string to float between 0-1
+// Hash string to double between 0-1
 // Source: https://stackoverflow.com/a/42909410
-float hash(const char *str)
+double hash(const char *str)
 {
 	return crc32b(str) / pow(2, 32);
 }
