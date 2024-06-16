@@ -8,7 +8,23 @@ VIEW_GRID_SIZE_X = 16
 VIEW_GRID_SIZE_Y = 16
 VIEW_GRID_SIZE_TOTAL = VIEW_GRID_SIZE_X * VIEW_GRID_SIZE_Y
 
-GAME_STATE_DATA_STRUCT_FORMAT = f'>256sI{VIEW_GRID_SIZE_TOTAL}didffi'
+# This comes from socket.hpp
+FORMAT = {
+    'endian': '>', # Big endian
+    'map_name': 'f',
+    'time_spent': 'I',
+    'view_trace_distance_array': f'{VIEW_GRID_SIZE_TOTAL}d',
+    'view_trace_classname_array': f'{VIEW_GRID_SIZE_TOTAL}f',
+    'player_status': 'f',
+    'equipped_weapon': 'f',
+    'next_checkpoint_distance': 'd',
+    'incoming_damage_direction': 'f',
+    'incoming_damage_amount': 'f',
+    'reward': 'i'
+}
+
+# With "".join syntax:
+GAME_STATE_DATA_STRUCT_FORMAT = "".join([value for value in FORMAT.values()])
 
 print("FORMAT: ", GAME_STATE_DATA_STRUCT_FORMAT)
 print("SIZE: ", struct.calcsize(GAME_STATE_DATA_STRUCT_FORMAT))

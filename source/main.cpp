@@ -2,7 +2,10 @@
 #include <thread>
 #include <chrono>
 #include <cstring>
+#include <cmath>
+
 #include "socket.hpp"
+#include "crc32b.hpp"
 
 using namespace std::chrono_literals;
 
@@ -15,17 +18,27 @@ LUA_FUNCTION(RegisterGameState)
 	LUA->CheckType(2, GarrysMod::Lua::Type::Table);
 	LUA->CheckType(3, GarrysMod::Lua::Type::Table);
 
-	struct serversock::gameStateData game_state_data{};
-	LUA->GetField(1, "map_name");
-	strcpy(game_state_data.map_name, LUA->GetString(-1));
-	LUA->Pop();
+	struct serversock::gameStateData game_state_data
+	{
+	};
 
+	// Get map_name field, hash it and store it in game_state_data
+	LUA->GetField(1, "map_name");
+	const char *map_name = LUA->GetString(-1);
+	game_state_data.map_name = hash(map_name);
+	LUA->Pop();
+	
 	LUA->GetField(1, "time_spent");
 	game_state_data.time_spent = LUA->GetNumber(-1);
 	LUA->Pop();
 
 	LUA->GetField(1, "player_status");
 	game_state_data.player_status = LUA->GetNumber(-1);
+	LUA->Pop();
+
+	LUA->GetField(1, "equipped_weapon");
+	const char *equipped_weapon = LUA->GetString(-1);
+	game_state_data.equipped_weapon = hash(equipped_weapon);
 	LUA->Pop();
 
 	LUA->GetField(1, "incoming_damage_direction");
@@ -36,27 +49,27 @@ LUA_FUNCTION(RegisterGameState)
 	game_state_data.incoming_damage_amount = LUA->GetNumber(-1);
 	LUA->Pop();
 
+	// Retrieve all view array distance values
 	for (int i = 0; i < VIEW_GRID_SIZE_X * VIEW_GRID_SIZE_Y; i++)
 	{
-		// Retrieve all view array distance values
 		LUA->PushNumber(i + 1); // Key
 		LUA->GetTable(2);		// Pops the key
 		double distance = LUA->GetNumber(-1);
 		game_state_data.view_trace_distance_array[i] = distance;
 	}
 
+	// Retrieve all view array classname values
 	for (int i = 0; i < VIEW_GRID_SIZE_X * VIEW_GRID_SIZE_Y; i++)
 	{
-		// Retrieve all view array classname values
 		LUA->PushNumber(i + 1); // Key
 		LUA->GetTable(3);		// Pops the key
 		const char *classname = LUA->GetString(-1);
-		// game_state_data.view_trace_classname_array[i] = classname;
+		game_state_data.view_trace_classname_array[i] = hash(classname);
 	}
 
 	// serversock::readValues(pointer);
 	// std::this_thread::sleep_for(1000ms);
-	serversock::writeValues(&game_state_data);
+	serversock::writeValues(&game_state_data); // Send data to Python socket server
 
 	LUA->PushSpecial(GarrysMod::Lua::SPECIAL_GLOB); // Push the global table
 	LUA->GetField(-1, "print");						// Get the print function
@@ -69,7 +82,7 @@ LUA_FUNCTION(RegisterGameState)
 
 GMOD_MODULE_OPEN()
 {
-	serversock::createConnection();
+	serversock::createConnection(); // Connect to Python socket server
 
 	LUA->PushSpecial(GarrysMod::Lua::SPECIAL_GLOB); // Push the global table
 	LUA->PushCFunction(RegisterGameState);			// Push our function
@@ -82,4 +95,11 @@ GMOD_MODULE_OPEN()
 GMOD_MODULE_CLOSE()
 {
 	return 0;
+}
+
+// Hash string to float between 0-1
+// Source: https://stackoverflow.com/a/42909410
+float hash(const char *str)
+{
+	return crc32b(str) / pow(2, 32);
 }

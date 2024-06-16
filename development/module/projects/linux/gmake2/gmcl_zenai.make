@@ -77,8 +77,10 @@ PERFILE_FLAGS_0 = $(ALL_CXXFLAGS) -fstrict-aliasing -Wstrict-aliasing=3
 GENERATED :=
 OBJECTS :=
 
+GENERATED += $(OBJDIR)/crc32b.o
 GENERATED += $(OBJDIR)/main.o
 GENERATED += $(OBJDIR)/socket.o
+OBJECTS += $(OBJDIR)/crc32b.o
 OBJECTS += $(OBJDIR)/main.o
 OBJECTS += $(OBJDIR)/socket.o
 
@@ -144,6 +146,9 @@ endif
 # File Rules
 # #############################################
 
+$(OBJDIR)/crc32b.o: ../../../../../source/crc32b.cpp
+	@echo "$(notdir $<)"
+	$(SILENT) $(CXX) $(PERFILE_FLAGS_0) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/main.o: ../../../../../source/main.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(PERFILE_FLAGS_0) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
